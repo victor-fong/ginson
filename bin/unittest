@@ -1,1 +1,1 @@
-go test ../src/gods/
+go test ../src/gods/ -v

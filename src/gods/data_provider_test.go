@@ -45,5 +45,9 @@ func TestInMemoryDataProvider_iteration(t *testing.T) {
 		assert.Equal(t, track.end, tracks[i].end)
 		i++
 	}
-	
+}
+
+func TestCreateReader(t *testing.T){
+	reader := createReader("../../test_data/test.csv")
+	assert.NotEqual(t, reader, nil)	
 }

@@ -3,7 +3,7 @@ package gods
 import (
     "testing"
     "github.com/stretchr/testify/assert"
-    "fmt"
+    "time"
 )
  
 func TestStub(t *testing.T) {
@@ -11,7 +11,6 @@ func TestStub(t *testing.T) {
 }
 
 func TestActions(t *testing.T) {
-	fmt.Printf("Testing")
 	assert.NotEqual(t, BUY, SELL)
 }
 
@@ -32,8 +31,10 @@ func TestTrack(t *testing.T){
 	var low float32 = 14.39
 	var high float32 = 15.85
 	var end float32 = 15.80
+	var date time.Time = time.Now()
 	
 	track1 := Track{
+		date: date,
 		symbol: symbol,
 		open: open,
 		low: low,
@@ -41,6 +42,7 @@ func TestTrack(t *testing.T){
 		end: end,
 	}
 	
+	assert.Equal(t, track1.date, date)
 	assert.Equal(t, track1.symbol, symbol)
 	assert.Equal(t, track1.open, open)
 	assert.Equal(t, track1.low, low)

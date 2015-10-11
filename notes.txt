@@ -7,3 +7,6 @@ git config --global alias.ci commit
 git config --global alias.st status
 
 git ls-files . --exclude-standard --others
+
+Symbol: ^GSPC
+http://real-chart.finance.yahoo.com/table.csv?s=%5EGSPC&a=00&b=3&c=1980&d=09&e=11&f=2015&g=d&ignore=.csv

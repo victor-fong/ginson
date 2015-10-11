@@ -1,6 +1,9 @@
 package gods
 
 //import "fmt"
+import (
+	"time"
+)
 
 const (
 	BUY = 1 << iota  // a == 1 (iota has been reset)
@@ -14,6 +17,7 @@ type Choice struct {
 }
 
 type Track struct {
+	date time.Time
 	symbol string
 	open float32
 	high float32

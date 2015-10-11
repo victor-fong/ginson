@@ -8,5 +8,7 @@ git config --global alias.st status
 
 git ls-files . --exclude-standard --others
 
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
 Symbol: ^GSPC
 http://real-chart.finance.yahoo.com/table.csv?s=%5EGSPC&a=00&b=3&c=1980&d=09&e=11&f=2015&g=d&ignore=.csv

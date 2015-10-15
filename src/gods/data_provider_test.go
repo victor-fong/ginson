@@ -51,3 +51,27 @@ func TestCreateReader(t *testing.T){
 	reader := createReader("../../test_data/test.csv")
 	assert.NotEqual(t, reader, nil)	
 }
+
+func TestCSVDataProvider(t *testing.T){
+	dp := CSVDataProvider{file_path: "../../test_data/test.csv"}
+	
+	tracks := make([]*Track, 2)
+	tracks[0] = &Track{
+//		date: date,
+		symbol: "test",
+		open: 1994.01001,
+		low: 1987.530029,
+		high: 2016.50,
+		end: 2013.430054,
+	}
+	
+	i := 0
+	for track := range dp.dataChannel(time.Time{}){
+		assert.Equal(t, track.symbol, tracks[i].symbol)
+		assert.Equal(t, track.open, tracks[i].open)
+		assert.Equal(t, track.high, tracks[i].high)
+		assert.Equal(t, track.low, tracks[i].low)
+		assert.Equal(t, track.end, tracks[i].end)
+		i++
+	}
+}

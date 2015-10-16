@@ -5,12 +5,24 @@ import (
     "github.com/stretchr/testify/assert"
     "math/rand"
     "time"
+    "sort"
+    "fmt"
 )
 
-func randomTracks() []*Track{
-	tracks := make([]*Track, 100)
-	for i := 0; i< 100; i++ {
+func randomTracks(num int) []*Track{
+	tracks := make([]*Track, num)
+	
+	for i := 0; i< num; i++ {
+		var year int = rand.Int() % 115 + 1900
+		var month int = rand.Int() % 12 + 1
+		var day int = rand.Int() % 29 + 1
+		
+		var str_date = fmt.Sprintf("%d-%02d-%02d", year, month, day)
+		
+		var date = parseTime(str_date)
+		
 		tracks[i] = &Track{
+			date: date,
 			symbol: RandString(4),
 			open: rand.Float32(),
 			high: rand.Float32(),
@@ -19,24 +31,36 @@ func randomTracks() []*Track{
 		}
 	}
 	
+	sort.Sort(TrackByDate(tracks))
+	
 	return tracks
 }
 
+func TestSortTrack(t *testing.T) {
+	var tracks []*Track = randomTracks(50)
+	
+	for i:=0; i<len(tracks); i++ {
+		if i != 0 {
+			assert.True(t, tracks[i-1].date.Before(tracks[i].date))
+		}
+	}
+}
+
 func TestInMemoryDataProvider_dataChannel(t *testing.T) {
-	tracks := randomTracks()
+	tracks := randomTracks(100)
 	dp := InMemoryDataProvider{tracks: tracks}
 	assert.NotEqual(t, dp, nil) 
 	
-	dataChannel := dp.dataChannel(time.Time{})
+	dataChannel := dp.dataChannel()
 	assert.NotEqual(t, dataChannel, nil)
 }
 
 func TestInMemoryDataProvider_iteration(t *testing.T) {
-	tracks := randomTracks()
+	tracks := randomTracks(100)
 	dp := InMemoryDataProvider{tracks: tracks}
 	
 	i := 0
-	for track := range dp.dataChannel(time.Time{}){
+	for track := range dp.dataChannel(){
 		assert.Equal(t, track.symbol, tracks[i].symbol)
 		assert.Equal(t, track.open, tracks[i].open)
 		assert.Equal(t, track.high, tracks[i].high)
@@ -95,7 +119,7 @@ func TestCSVDataProvider(t *testing.T){
 	}
 	
 	i := 0
-	for track := range dp.dataChannel(time.Time{}){
+	for track := range dp.dataChannel(){
 		assert.Equal(t, track.date, tracks[i].date)
 		assert.Equal(t, track.symbol, tracks[i].symbol)
 		assert.Equal(t, track.open, tracks[i].open)

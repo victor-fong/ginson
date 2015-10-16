@@ -13,11 +13,17 @@ type DataProvider interface {
 	dataChannel(startDate time.Time) <- chan *Track
 }
 
+type TrackByDate []*Track
+
+func (a TrackByDate) Len() int           { return len(a) }
+func (a TrackByDate) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a TrackByDate) Less(i, j int) bool { return a[i].date.Before(a[j].date) }
+
 type InMemoryDataProvider struct {
 	tracks []*Track
 }
 
-func (dp InMemoryDataProvider) dataChannel(startDate time.Time) <- chan *Track {
+func (dp InMemoryDataProvider) dataChannel() <- chan *Track {
 	result := make(chan *Track, 50)
 	
 	go func(){
@@ -72,7 +78,7 @@ func parseTime(input string) time.Time {
 	return result
 }
 
-func (dp CSVDataProvider) dataChannel(startDate time.Time) <- chan *Track {
+func (dp CSVDataProvider) dataChannel() <- chan *Track {
 	result := make(chan *Track, 10)
 	
 	var reader io.ReadSeeker = createReader(dp.file_path)
@@ -106,9 +112,7 @@ func (dp CSVDataProvider) dataChannel(startDate time.Time) <- chan *Track {
 	return result
 }
 
-
-
-
-
-
-
+func getTrackByDate(channel <-chan *Track, date time.Time) *Track {
+	var track *Track = <-channel
+	return track
+}

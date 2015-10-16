@@ -31,6 +31,7 @@ func TestTrack(t *testing.T){
 	var low float32 = 14.39
 	var high float32 = 15.85
 	var end float32 = 15.80
+	var volume uint64 = 3939140000
 	var date time.Time = time.Now()
 	
 	track1 := Track{
@@ -40,6 +41,7 @@ func TestTrack(t *testing.T){
 		low: low,
 		high: high,
 		end: end,
+		volume: volume,
 	}
 	
 	assert.Equal(t, track1.date, date)
@@ -47,7 +49,8 @@ func TestTrack(t *testing.T){
 	assert.Equal(t, track1.open, open)
 	assert.Equal(t, track1.low, low)
 	assert.Equal(t, track1.high, high)
-	assert.Equal(t, track1.end, end) 
+	assert.Equal(t, track1.end, end)
+	assert.Equal(t, track1.volume, volume)
 }
 
 func TestFoolName(t *testing.T){

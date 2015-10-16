@@ -23,6 +23,7 @@ type Track struct {
 	high float32
 	low float32
 	end float32
+	volume uint64
 }
 
 type God interface {

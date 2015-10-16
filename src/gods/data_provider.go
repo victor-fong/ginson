@@ -5,8 +5,8 @@ import (
 	"code.google.com/p/rog-go/reverse" 
 	"os"
 	"io"
-	"fmt"
 	"strings"
+	"strconv"
 )
 
 type DataProvider interface {
@@ -42,29 +42,68 @@ func createReader(file_path string) io.ReadSeeker{
 	return reader
 }
 
+func parseFloat32(input string) float32 {
+	result, err := strconv.ParseFloat(input, 32)
+	if err != nil {
+		panic(err)
+	}
+	return float32(result)
+}
+
+func getSymbolFromPath(input string) string {
+	var elements []string = strings.Split(input, "/")
+	var last_element string = elements[len(elements)-1]
+	return strings.Split(last_element, ".")[0]
+}
+
+func parseUint64(input string) uint64 {
+	result, err := strconv.ParseUint(input, 10, 64)
+	if err != nil {
+		panic(err)
+	}
+	return result
+}
+
+func parseTime(input string) time.Time {
+	result, err := time.Parse("2006-01-02", input)
+	if err != nil{
+		panic(err)
+	}
+	return result
+}
+
 func (dp CSVDataProvider) dataChannel(startDate time.Time) <- chan *Track {
 	result := make(chan *Track, 10)
 	
 	var reader io.ReadSeeker = createReader(dp.file_path)
 	var scanner *reverse.Scanner = reverse.NewScanner(reader)
 	
-	for scanner.Scan() {
-		var text string = scanner.Text()
-		fmt.Printf("Text: %s\n", text)
-		
-		var split_text []string = strings.Split(text, ",")
-		for i:=0; i<len(split_text); i++ {
-			fmt.Printf("Element[%i] = %s\n", i, split_text[i])
-		}
-		
-//		result <-
-	}
-	close(result)
+	var symbol string = getSymbolFromPath(dp.file_path)
 	
-//	tracks []*Track = 
+	go func(){
+		for scanner.Scan() {
+			var text string = scanner.Text()
+			
+			var split_text []string = strings.Split(text, ",")
+			if(split_text[0] != "Date") {
+				var track *Track = &Track{
+					symbol: symbol,
+					date: parseTime(split_text[0]),
+					open: parseFloat32(split_text[1]),
+					high: parseFloat32(split_text[2]),
+					low: parseFloat32(split_text[3]),
+					end: parseFloat32(split_text[4]),
+					volume: parseUint64(split_text[5]),
+				}
+				
+				result <- track
+			}
+		}
+		close(result)
+	}()
+	 
 	
 	return result
-//	reverse.NewScanner(r io.ReadSeeker) *Scanner
 }
 
 

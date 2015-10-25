@@ -32,6 +32,10 @@ func (fool Fool) decide(openings []*Track) []Choice{
 	return []Choice{}
 }
 
+//type Monkey struct {
+//	
+//}
+
 //func (fool Fool) decide(openings []OpenMarket) Choice{
 //	action := rand.Int()
 //	amount := rand.Int()

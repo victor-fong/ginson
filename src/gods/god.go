@@ -27,7 +27,7 @@ type Track struct {
 }
 
 type God interface {
-	decide(openings []Track) []Choice
+	decide(openings []*Track) []Choice
 	name() string  
 }
 
@@ -39,7 +39,7 @@ func (fool Fool) name() string{
 	return "Fool ~_~"
 }
 
-func (fool Fool) decide(openings []Track) []Choice{
+func (fool Fool) decide(openings []*Track) []Choice{
 	return []Choice{}
 }
 

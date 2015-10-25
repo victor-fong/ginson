@@ -142,7 +142,6 @@ func TestGetTrackByDate(t *testing.T) {
 	var dataProvider DataProviderByDate = DataProviderByDate{
 		data_channel: dataChannel,
 	}
-	
 	var firstTrack *Track = dataProvider.getTrackByDate(tracks[0].date)
 	assert.Equal(t, tracks[0].date, firstTrack.date)
 }

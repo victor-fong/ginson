@@ -65,14 +65,14 @@ func TestFoolDecide(t *testing.T){
 	assert.Equal(t, result, empty_array)
 	assert.Equal(t, len(result), 0)
 	
-	track1 := Track{symbol: "abcd", open: 15.01}
-	tracks := []Track {track1}
+	track1 := &Track{symbol: "abcd", open: 15.01}
+	tracks := []*Track {track1}
 	result = fool.decide(tracks)
 	assert.Equal(t, result, empty_array)
 	assert.Equal(t, len(result), 0)
 	
-	track2 := Track{symbol: "edads", open: 15.01}
-	tracks = []Track {track1, track2}
+	track2 := &Track{symbol: "edads", open: 15.01}
+	tracks = []*Track {track1, track2}
 	result = fool.decide(tracks)
 	assert.Equal(t, result, empty_array)
 	assert.Equal(t, len(result), 0)

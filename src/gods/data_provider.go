@@ -126,14 +126,17 @@ func (dp DataProviderByDate) getTrackByDate(date time.Time) *Track {
 		dp.current_track = <- dp.data_channel
 	}
 	
-	if dp.current_track.date.Equal(date) {
-		return dp.current_track
-	} 
+	for dp.current_track != nil { 
+		if dp.current_track.date.Equal(date) {
+			return dp.current_track
+		} 
+		
+		if dp.current_track.date.After(date) {
+			return nil
+		}
+		
+		dp.current_track = <- dp.data_channel
 	
-	if dp.current_track.date.After(date) {
-		return nil
 	}
-	
-	dp.current_track = <- dp.data_channel
-	return dp.getTrackByDate(date)
+	return nil
 }

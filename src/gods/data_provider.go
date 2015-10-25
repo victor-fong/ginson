@@ -112,7 +112,28 @@ func (dp CSVDataProvider) dataChannel() <- chan *Track {
 	return result
 }
 
-func getTrackByDate(channel <-chan *Track, date time.Time) *Track {
-	var track *Track = <-channel
-	return track
+type DataProviderByDateIntf interface {
+	getTrackByDate(date time.Time) *Track 
+}
+
+type DataProviderByDate struct {
+	data_channel <-chan *Track
+	current_track *Track
+}
+
+func (dp DataProviderByDate) getTrackByDate(date time.Time) *Track {
+	if dp.current_track == nil {
+		dp.current_track = <- dp.data_channel
+	}
+	
+	if dp.current_track.date.Equal(date) {
+		return dp.current_track
+	} 
+	
+	if dp.current_track.date.After(date) {
+		return nil
+	}
+	
+	dp.current_track = <- dp.data_channel
+	return dp.getTrackByDate(date)
 }

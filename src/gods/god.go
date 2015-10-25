@@ -5,17 +5,6 @@ import (
 	"time"
 )
 
-const (
-	BUY = 1 << iota  // a == 1 (iota has been reset)
-    SELL = 1 << iota  // b == 2
-)
-
-type Choice struct {
-	symbol string
-	action int
-	amount int
-}
-
 type Track struct {
 	date time.Time
 	symbol string

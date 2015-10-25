@@ -11,12 +11,12 @@ func TestStub(t *testing.T) {
 }
 
 func TestActions(t *testing.T) {
-	assert.NotEqual(t, BUY, SELL)
+	assert.NotEqual(t, BUY_LONG, SELL_LONG)
 }
 
 func TestChoice(t *testing.T) {
 	symbol := "abcd"
-	action := BUY
+	action := BUY_LONG
 	amount := 5000
 	
 	choice1 := Choice{symbol: symbol, action: action, amount: amount}
